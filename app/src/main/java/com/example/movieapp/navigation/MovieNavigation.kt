@@ -19,10 +19,10 @@ fun MovieNavigation(){
         // url: www.domain.com/detailscreen/id=12
         composable(MovieScreens.DetailScreen.name + "/{movieId}",    // definition des pfades
                 arguments = listOf(navArgument("movieId") { // definition des namens des arguments
-                    type = NavType.StringType
+                    type = NavType.StringType   // default ist string
                 })
             ){ backStackEntry ->
-                DetailScreen(navController = navController, backStackEntry.arguments?.getString("movieId")) // argument aus der navigation aus dem back stack herausholen
+                DetailScreen(navController = navController, movieId = backStackEntry.arguments?.getString("movieId")) // argument aus der navigation aus dem back stack herausholen
             }
         composable(MovieScreens.FavoriteScreen.name){ FavoriteScreen(navController = navController) }
         // add more routes and screen here (nav graph)

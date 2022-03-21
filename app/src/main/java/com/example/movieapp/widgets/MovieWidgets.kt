@@ -111,7 +111,8 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
                         .data(image)
                         .crossfade(true)
                         .build(),
-                    contentDescription = "Movie Image"
+                    contentDescription = "Movie Image",
+                    contentScale = ContentScale.Crop
                 )
             }
         }

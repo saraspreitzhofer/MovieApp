@@ -13,6 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movieapp.models.Movie
+import com.example.movieapp.models.getMovies
+import com.example.movieapp.widgets.MovieRow
 
 @Preview(showBackground = true)
 @Composable
@@ -37,12 +40,13 @@ fun FavoriteScreen( navController: NavController = rememberNavController() ){
 }
 
 @Composable
-fun MainContent(){
+fun MainContent(movieList: List<Movie> = getMovies()){
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {
         Column {
-            Text(text = "My Favorites", style = MaterialTheme.typography.h5)
+            MovieRow(movieList[0])
+            MovieRow(movieList[1])
         }
     }
 }
