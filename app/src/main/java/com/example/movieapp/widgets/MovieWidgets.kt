@@ -2,7 +2,6 @@ package com.example.movieapp.widgets
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,28 +11,28 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
 import com.example.movieapp.models.Movie
 import com.example.movieapp.models.getMovies
+import com.example.movieapp.viewmodels.FavoritesViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(movie: Movie = getMovies()[0],
-            onItemClick: (String) -> Unit = {}    // callback function
+             onItemClick: (String) -> Unit = {},    // callback function to display detail screen
+             onFavoriteItemClick: (Movie) -> Unit = {},
+             content: @Composable () -> Unit = {}    //callback function to display favorite icon
              ){
     var arrowClicked by remember {
         mutableStateOf(false)
@@ -53,7 +52,6 @@ fun MovieRow(movie: Movie = getMovies()[0],
                 //shape = RectangleShape
                 //elevation = 5.dp
             ) {
-                // Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Profile Picture")
                 /* deprecated:
                 Image(
                     painter = rememberImagePainter(
@@ -73,7 +71,9 @@ fun MovieRow(movie: Movie = getMovies()[0],
                     modifier = Modifier.clip(CircleShape)
                 )
             }
-            Column {
+            Column (modifier = Modifier
+                .width(200.dp)
+                .padding(start = 10.dp)) {
                 Text(text = movie.title, style = MaterialTheme.typography.h6)
                 Text(text = "Director: ${movie.director}", style = MaterialTheme.typography.caption)
                 Text(text = "Released: ${movie.year}", style = MaterialTheme.typography.caption)
@@ -91,6 +91,13 @@ fun MovieRow(movie: Movie = getMovies()[0],
                     else Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Arrow Down")
                 }
             }
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+                horizontalAlignment = Alignment.End){
+                // Favorite Icon
+                content()
+            }
         }
     }
 }
@@ -100,7 +107,9 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
     LazyRow {
         items(movie.images){ image -> 
             Card (
-                modifier = Modifier.padding(12.dp).size(240.dp),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(240.dp),
                 elevation = 4.dp){
                 /* deprecated:
                 Image(
@@ -117,4 +126,29 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
             }
         }
     }
+}
+
+@Composable
+fun FavoriteIcon(movie: Movie,
+                 isFavorite: Boolean = false,
+                 onFavoriteItemClick: (Movie) -> Unit = {}) {
+    IconButton(onClick = { onFavoriteItemClick(movie)}) {
+        if (isFavorite) {
+            // favoritesViewModel.addMovie(movie)
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite Icon",
+                tint = Color.Cyan
+            )
+        }
+        else {
+            // favoritesViewModel.removeMovie(movie)
+            Icon(
+                imageVector = Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite Icon",
+                tint = Color.Cyan
+            )
+        }
+    }
+
 }

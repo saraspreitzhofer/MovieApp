@@ -18,14 +18,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.models.Movie
 import com.example.movieapp.models.getMovies
+import com.example.movieapp.viewmodels.FavoritesViewModel
+import com.example.movieapp.widgets.FavoriteIcon
 import com.example.movieapp.widgets.HorizontalScrollableImageView
 import com.example.movieapp.widgets.MovieRow
 
-@Preview(showBackground = true)
+// @Preview(showBackground = true)
 @Composable
 fun DetailScreen(
     navController: NavController = rememberNavController(),
-    movieId: String? = "tt0499549"
+    movieId: String? = "tt0499549",
+    viewModel: FavoritesViewModel
 ){
     val movie = filterMovie(movieId = movieId)
     Scaffold(
@@ -43,17 +46,28 @@ fun DetailScreen(
             }
         }
     ) {
-        MainContent(movie = movie)
+        MainContent(movie = movie, favoritesViewModel = viewModel)
     }
 }
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel /*= FavoritesViewModel()*/){
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
-            MovieRow(movie = movie)
+            MovieRow(movie = movie){
+                FavoriteIcon(
+                    movie = movie,
+                    isFavorite = favoritesViewModel.isFavorite(movie)
+                ) { favMovie ->
+                    if(favoritesViewModel.isFavorite(favMovie)){
+                        favoritesViewModel.removeMovie(favMovie)
+                    } else {
+                        favoritesViewModel.addMovie(favMovie)
+                    }
+                }
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Divider()
             Spacer(modifier = Modifier.height(8.dp))
@@ -67,4 +81,5 @@ fun MainContent(movie: Movie){
 fun filterMovie(movieId: String?): Movie {
     return getMovies().filter { movie -> movie.id == movieId }[0]   // erstes Element der 1-elementigen Liste (ID ist unique)
     // return getMovies().filter { it.id == movieId }[0]   // auch möglich
+    //todo FavoriteIcon
 }

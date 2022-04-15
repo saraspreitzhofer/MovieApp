@@ -3,6 +3,8 @@ package com.example.movieapp.screens.favorite
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,11 +17,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.models.Movie
 import com.example.movieapp.models.getMovies
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.movieapp.widgets.MovieRow
 
-@Preview(showBackground = true)
 @Composable
-fun FavoriteScreen( navController: NavController = rememberNavController() ){
+fun FavoriteScreen( navController: NavController = rememberNavController(),
+                    viewModel: FavoritesViewModel
+){
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = Color.Cyan, elevation = 3.dp){
@@ -35,18 +39,22 @@ fun FavoriteScreen( navController: NavController = rememberNavController() ){
             }
         }
     ) {
-        MainContent()
+        MainContent(movieList = viewModel.favoriteMovies)
     }
 }
 
 @Composable
-fun MainContent(movieList: List<Movie> = getMovies()){
+fun MainContent(movieList: List<Movie> /*= getMovies()*/ ){
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {
-        Column {
-            MovieRow(movieList[0])
-            MovieRow(movieList[1])
+        LazyColumn {
+            items(items = movieList){ movie -> MovieRow(movie) }
         }
+        /*Column {
+            // MovieRow(movieList[0])
+            // MovieRow(movieList[1])
+            movieList.forEach {movie -> MovieRow(movie)}
+        }*/
     }
 }
