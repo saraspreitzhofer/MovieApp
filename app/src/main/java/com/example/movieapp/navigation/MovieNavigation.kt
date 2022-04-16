@@ -17,10 +17,6 @@ fun MovieNavigation(){
     val navController = rememberNavController()
     val favoritesViewModel: FavoritesViewModel = viewModel()
 
-    /*var isFavorite by remember {
-        mutableStateOf(false)
-    }*/
-
     NavHost(navController = navController, startDestination = MovieScreens.HomeScreen.name){
         composable(MovieScreens.HomeScreen.name){
             HomeScreen(navController = navController, // navController als argument übergeben, damit man ihn in HomeScreen nutzen kann

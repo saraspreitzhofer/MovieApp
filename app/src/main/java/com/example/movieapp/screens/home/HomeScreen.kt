@@ -1,5 +1,6 @@
 package com.example.movieapp.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -66,24 +67,23 @@ fun HomeScreen(navController: NavController = rememberNavController(),
 @Composable
 fun MainContent(navController: NavController,
                 movieList: List<Movie> = getMovies(),
-                favoritesViewModel: FavoritesViewModel /*= FavoritesViewModel()*/){
+                favoritesViewModel: FavoritesViewModel){
     LazyColumn {
         // item { Text(text = "abc") }     // add a single composable to LazyColumn
         // itemsIndexed(movieList){index, movie -> MovieRow(movie)}    // add a list of composables with index
         items(items = movieList) { movie ->     // add a list of composables to LazyColumn
-
             MovieRow(movie = movie,             // render MovieRow composable for each item
-                onItemClick = {movieId -> navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")}
+                onItemClick = {movieId -> navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")},
             ){
                 FavoriteIcon(
                     movie = movie,
                     isFavorite = favoritesViewModel.isFavorite(movie)
                 ) { favMovie ->
-                    if(favoritesViewModel.isFavorite(favMovie)){
-                        favoritesViewModel.removeMovie(favMovie)
-                    } else {
-                        favoritesViewModel.addMovie(favMovie)
-                    }
+                        if(favoritesViewModel.isFavorite(favMovie)){
+                            favoritesViewModel.removeMovie(favMovie)
+                        } else {
+                            favoritesViewModel.addMovie(favMovie)
+                        }
                 }
             }
         }

@@ -51,7 +51,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel /*= FavoritesViewModel()*/){
+fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel){
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {
@@ -81,5 +81,4 @@ fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel /*= Favorit
 fun filterMovie(movieId: String?): Movie {
     return getMovies().filter { movie -> movie.id == movieId }[0]   // erstes Element der 1-elementigen Liste (ID ist unique)
     // return getMovies().filter { it.id == movieId }[0]   // auch möglich
-    //todo FavoriteIcon
 }

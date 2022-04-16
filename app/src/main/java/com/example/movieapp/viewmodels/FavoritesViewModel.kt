@@ -1,5 +1,6 @@
 package com.example.movieapp.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.models.Movie
@@ -11,7 +12,7 @@ class FavoritesViewModel : ViewModel() {
 
     // Add a movie to favorites
     fun addMovie(movie: Movie){
-        if (isFavorite(movie = movie)) {
+        if (!isFavorite(movie = movie)) {
             _favoriteMovies.add(movie)
         }
     }

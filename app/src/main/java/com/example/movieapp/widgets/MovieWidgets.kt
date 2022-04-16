@@ -1,5 +1,6 @@
 package com.example.movieapp.widgets
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
@@ -31,7 +32,7 @@ import com.example.movieapp.viewmodels.FavoritesViewModel
 @Composable
 fun MovieRow(movie: Movie = getMovies()[0],
              onItemClick: (String) -> Unit = {},    // callback function to display detail screen
-             onFavoriteItemClick: (Movie) -> Unit = {},
+             //onFavoriteItemClick: (Movie) -> Unit = {},
              content: @Composable () -> Unit = {}    //callback function to display favorite icon
              ){
     var arrowClicked by remember {
@@ -95,8 +96,7 @@ fun MovieRow(movie: Movie = getMovies()[0],
                 .fillMaxWidth()
                 .padding(5.dp),
                 horizontalAlignment = Alignment.End){
-                // Favorite Icon
-                content()
+                    content()   // Favorite Icon
             }
         }
     }
@@ -130,19 +130,17 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
 
 @Composable
 fun FavoriteIcon(movie: Movie,
-                 isFavorite: Boolean = false,
-                 onFavoriteItemClick: (Movie) -> Unit = {}) {
+                 isFavorite: Boolean,
+                 onFavoriteItemClick: (Movie) -> Unit = {}
+){
     IconButton(onClick = { onFavoriteItemClick(movie)}) {
         if (isFavorite) {
-            // favoritesViewModel.addMovie(movie)
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = "Favorite Icon",
                 tint = Color.Cyan
             )
-        }
-        else {
-            // favoritesViewModel.removeMovie(movie)
+        } else {
             Icon(
                 imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite Icon",
@@ -150,5 +148,4 @@ fun FavoriteIcon(movie: Movie,
             )
         }
     }
-
 }
