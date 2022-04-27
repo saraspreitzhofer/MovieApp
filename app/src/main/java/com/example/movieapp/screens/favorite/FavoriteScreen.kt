@@ -31,6 +31,8 @@ fun FavoriteScreen( navController: NavController = rememberNavController(),
                     Icon(imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Up Button",
                         modifier = Modifier.clickable {
+                            /*LD 3
+                            The FavoritesScreen has a TopAppBar which navigates users to the previous screen.*/
                             navController.popBackStack()    // go back to last screen
                         })
                     Spacer(modifier = Modifier.width(20.dp))
@@ -39,6 +41,9 @@ fun FavoriteScreen( navController: NavController = rememberNavController(),
             }
         }
     ) {
+        /*LD 3
+        The FavoritesScreen renders a list of movies with MovieRow.
+        The movies previously marked as favorites should be displayed in the FavoritesScreen */
         MainContent(movieList = viewModel.favoriteMovies, navController = navController)
     }
 }
@@ -52,6 +57,8 @@ fun MainContent(movieList: List<Movie>,
         LazyColumn {
             items(items = movieList){ movie ->
                 Log.i("FavIcon", "display movie ${movie.title} in fav screen")
+                /*LD 4
+                In the FavoritesScreen the movies shall be displayed without the icon.*/
                 MovieRow(movie = movie,
                     onItemClick = {movieId ->
                         navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")}) }

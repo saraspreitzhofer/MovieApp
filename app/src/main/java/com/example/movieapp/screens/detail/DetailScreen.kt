@@ -31,6 +31,9 @@ fun DetailScreen(
     viewModel: FavoritesViewModel
 ){
     val movie = filterMovie(movieId = movieId)
+    /* LD 3
+    Add a TopAppBar to your DetailScreen. It should show the selected movie’s title and an ArrowBack
+    icon. When the ArrowBack icon is clicked, the app should navigate to the previous screen.*/
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = Color.Cyan, elevation = 3.dp){
@@ -56,7 +59,12 @@ fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel){
         .fillMaxWidth()
         .fillMaxHeight()) {
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
+            /* LD 3
+            (Re)Use your MovieRow composable inside DetailScreen, to show selected movie’s information*/
             MovieRow(movie = movie){
+                /*LD 4
+                Integrate the FavoriteIcon in MovieRow composable.
+                In the HomeScreen and DetailScreen MovieRows shall be displayed with FavoriteIcon.*/
                 FavoriteIcon(
                     movie = movie,
                     isFavorite = favoritesViewModel.isFavorite(movie)
@@ -73,6 +81,8 @@ fun MainContent(movie: Movie, favoritesViewModel: FavoritesViewModel){
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Movie Images", style = MaterialTheme.typography.h5)
             Spacer(modifier = Modifier.height(8.dp))
+            /* LD 3
+            Coil: Extend the DetailScreen with a LazyRow that shows all movie images inside scrollable Card composables*/
             HorizontalScrollableImageView(movie = movie)
         }
     }

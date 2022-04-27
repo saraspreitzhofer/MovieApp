@@ -5,7 +5,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.models.Movie
 
-class FavoritesViewModel : ViewModel() {
+class FavoritesViewModel : ViewModel() {    // erbt von ViewModel
+    // contains business logic
+    // meistens wird ein ViewModel einem oder mehreren Screen(s) zugeordnet
+    /*LD 4
+    Initially the favorite movie list is an empty list.*/
     private val _favoriteMovies = mutableStateListOf<Movie>()
     val favoriteMovies: List<Movie>
         get() = _favoriteMovies

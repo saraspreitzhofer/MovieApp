@@ -31,10 +31,18 @@ import com.example.movieapp.viewmodels.FavoritesViewModel
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(movie: Movie = getMovies()[0],
-             onItemClick: (String) -> Unit = {},    // callback function to display detail screen
+             // LD 3: callback function to display detail screen
+             onItemClick: (String) -> Unit = {},
              //onFavoriteItemClick: (Movie) -> Unit = {},
+             /*LD 4
+             Adapt the MovieRow composable so that the FavoriteIcon composable can be dynamically shown or hidden.
+             Hint: the "cleanest" way to solve this is with an optional content parameter in MovieRow.*/
              content: @Composable () -> Unit = {}    //callback function to display favorite icon
              ){
+    /*LD 2
+    Add an arrow Icon to MovieRow. Make it toggle between an Icons.Default.KeyboardArrowDown and
+    Icons.Default.KeyboardArrowUp Icon when it is clicked. Use a state variable as before.
+    Tip: use Modifier.clickable to change the toggle state. */
     var arrowClicked by remember {
         mutableStateOf(false)
     }
@@ -61,6 +69,9 @@ fun MovieRow(movie: Movie = getMovies()[0],
                     ),
                     contentDescription = "Movie Poster",
                     modifier = Modifier.size(128.dp))*/
+
+                /*LD 3
+                Coil: Adapt MovieRow to show a circular preview image for each movie*/
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(movie.images[0])
@@ -78,6 +89,9 @@ fun MovieRow(movie: Movie = getMovies()[0],
                 Text(text = movie.title, style = MaterialTheme.typography.h6)
                 Text(text = "Director: ${movie.director}", style = MaterialTheme.typography.caption)
                 Text(text = "Released: ${movie.year}", style = MaterialTheme.typography.caption)
+                /*LD 2
+                Extend the MovieRow with an AnimatedVisibility composable, which shows and hides information
+                (plot, actors, genre and rating) for each movie when the arrow icon from before is clicked.*/
                 AnimatedVisibility(visible = arrowClicked) {
                     Column (modifier = Modifier.padding(5.dp)){
                         Text(text = "Plot: ${movie.plot}", style = MaterialTheme.typography.caption)
@@ -102,6 +116,8 @@ fun MovieRow(movie: Movie = getMovies()[0],
     }
 }
 
+/* LD 3
+Coil: Extend the DetailScreen with a LazyRow that shows all movie images inside scrollable Card composables*/
 @Composable
 fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
     LazyRow {
@@ -128,19 +144,29 @@ fun HorizontalScrollableImageView(movie: Movie = getMovies()[0]){
     }
 }
 
+/*LD 4
+Create a composable FavoriteIcon.*/
 @Composable
 fun FavoriteIcon(movie: Movie,
                  isFavorite: Boolean,
+                 /*LD 4
+                 Make sure that the state is injected into the FavoriteIcon composable from outside.
+                 MovieRow and FavoriteIcon should not contain a reference to the ViewModel - therefore
+                 make use of callback functions (lambda expressions in the function parameters).*/
                  onFavoriteItemClick: (Movie) -> Unit = {}
 ){
     IconButton(onClick = { onFavoriteItemClick(movie)}) {
         if (isFavorite) {
+            /*LD 4
+            Favorite movies are rendered with a filled Favorite Icon.*/
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = "Favorite Icon",
                 tint = Color.Cyan
             )
         } else {
+            /*LD 4
+            Initially MovieIcons are rendered in „bordered“-style.*/
             Icon(
                 imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite Icon",

@@ -62,6 +62,8 @@ dependencies {
     // Navigation Component
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
+    /*LD 3:
+    Use Coil to load images from Movie.kt URLs*/
     // Coil
     implementation "io.coil-kt:coil-compose:$coil_version"
 

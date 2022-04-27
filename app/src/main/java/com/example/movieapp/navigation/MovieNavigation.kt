@@ -12,6 +12,11 @@ import com.example.movieapp.screens.favorite.FavoriteScreen
 import com.example.movieapp.screens.home.HomeScreen
 import com.example.movieapp.viewmodels.FavoritesViewModel
 
+/*LD 3
+  controller: central API for navigation instructions, stateful
+  host: hosts each navigation graph item and swaps out each destination (composable) when user navigates to another destination
+  graph: holds information about destinations (composables) and maps out all of the destination and its information*/
+
 @Composable
 fun MovieNavigation(){
     val navController = rememberNavController()
@@ -32,10 +37,12 @@ fun MovieNavigation(){
                     movieId = backStackEntry.arguments?.getString("movieId"),
                     viewModel = favoritesViewModel) // argument aus der navigation aus dem back stack herausholen
             }
+        /*LD 3
+        Create a FavoritesScreen composable and add it to your MovieNavigation.*/
         composable(MovieScreens.FavoriteScreen.name){
             FavoriteScreen(navController = navController,
                 viewModel = favoritesViewModel) }
 
-    // add more routes and screen here (nav graph)
-    }
+// add more routes and screen here (nav graph)
+}
 }
