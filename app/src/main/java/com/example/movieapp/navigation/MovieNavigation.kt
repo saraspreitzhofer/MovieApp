@@ -19,23 +19,26 @@ import com.example.movieapp.viewmodels.FavoritesViewModel
 
 @Composable
 fun MovieNavigation(){
-    val navController = rememberNavController()
-    val favoritesViewModel: FavoritesViewModel = viewModel()
+    val navController = rememberNavController() // create navController instance
+    val favoritesViewModel: FavoritesViewModel = viewModel()    // Initialize a ViewModel inside a composable
+    // Initialize and access ViewModel inside MainActivity (outside of composable scope, eg setContent):
+    // val favoritesViewModel: FavoritesViewModel by viewModels()
 
-    NavHost(navController = navController, startDestination = MovieScreens.HomeScreen.name){
-        composable(MovieScreens.HomeScreen.name){
+    NavHost(navController = navController,  // pass the navController instance to the NavHost
+        startDestination = MovieScreens.HomeScreen.name){   // pass a start destination
+        composable(MovieScreens.HomeScreen.name){   // route
             HomeScreen(navController = navController, // navController als argument übergeben, damit man ihn in HomeScreen nutzen kann
                 viewModel = favoritesViewModel)}
 
         // url: www.domain.com/detailscreen/id=12
-        composable(MovieScreens.DetailScreen.name + "/{movieId}",    // definition des pfades
+        composable(MovieScreens.DetailScreen.name + "/{movieId}",    // definition des pfades mit placeholder
                 arguments = listOf(navArgument("movieId") { // definition des namens des arguments
                     type = NavType.StringType   // default ist string
                 })
-            ){ backStackEntry ->
+            ){ backStackEntry ->    // Extract NavArguments from the BackStackEntry to pass them into composables (argument aus der navigation aus dem back stack herausholen)
                 DetailScreen(navController = navController,
                     movieId = backStackEntry.arguments?.getString("movieId"),
-                    viewModel = favoritesViewModel) // argument aus der navigation aus dem back stack herausholen
+                    viewModel = favoritesViewModel)
             }
         /*LD 3
         Create a FavoritesScreen composable and add it to your MovieNavigation.*/
